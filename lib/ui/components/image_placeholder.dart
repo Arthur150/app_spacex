@@ -6,7 +6,7 @@ class ImagePlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: Colors.red,
       child: const Center(
         child: Icon(
           Icons.photo_rounded,

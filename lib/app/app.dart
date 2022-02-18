@@ -1,5 +1,8 @@
+import 'package:app_spacex/core/model/company.dart';
 import 'package:app_spacex/core/model/launch.dart';
+import 'package:app_spacex/ui/company_detail.dart';
 import 'package:app_spacex/ui/home.dart';
+import 'package:app_spacex/ui/launch_detail.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -21,14 +24,14 @@ class App extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       onGenerateRoute: (RouteSettings settings) {
-        /*var arguments = settings.arguments;
+        var arguments = settings.arguments;
         switch (settings.name) {
           case LaunchDetail.route:
             if (arguments != null && arguments is LaunchDetailArguments) {
@@ -36,12 +39,20 @@ class App extends StatelessWidget {
               return MaterialPageRoute(builder: (_) => LaunchDetail(launch));
             } else {
               throw Exception(
-                  "Cette route doit avoir un objet LaunchDetailArgument en argument");
+                  "Cette route doit avoir un objet LaunchDetailArguments en argument");
+            }
+          case CompanyDetail.route:
+            if (arguments != null && arguments is CompanyDetailArguments) {
+              Company company = arguments.company;
+              return MaterialPageRoute(builder: (_) => CompanyDetail(company));
+            } else {
+              throw Exception(
+                  "Cette route doit avoir un objet CompanyDetailArguments en argument");
             }
 
           default:
             return unknownRoute();
-        }*/
+        }
       },
       home: const HomePage(title: 'SpaceX Launches'),
     );
@@ -50,7 +61,7 @@ class App extends StatelessWidget {
   MaterialPageRoute unknownRoute() {
     return MaterialPageRoute(
         builder: (_) => const Scaffold(
-              body: Center(child: Text("Route inconnue")),
+              body: Center(child: Text("Unknown route")),
             ));
   }
 }

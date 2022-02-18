@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:app_spacex/core/manager/launch_manager.dart';
+import 'package:app_spacex/core/manager/company_manager.dart';
 import 'package:app_spacex/ui/pages/launch_list_page.dart';
+import 'package:app_spacex/ui/company_detail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -36,22 +38,43 @@ class _HomePageState extends State<HomePage> {
           // Here we take the value from the HomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
+          actions: <Widget>[
+                          IconButton(
+                              onPressed: () async {
+                                var company = await CompanyManager().getCompany();
+
+                                if (company != null) {
+                                await Navigator.of(context).pushNamed(
+                                  CompanyDetail.route,
+                                  arguments: CompanyDetailArguments(company: company));
+                                }
+                              },
+                              icon: const Icon(Icons.home)
+                            )
+                        ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
-                label: "Liste",
+                label: "Upcomings",
                 icon: Icon(Icons.list),
                 activeIcon: Icon(
                   Icons.list,
-                  color: Colors.blue,
+                  color: Colors.red,
                 )),
             BottomNavigationBarItem(
-                label: "Favoris",
+                label: "Previous",
+                icon: Icon(Icons.list),
+                activeIcon: Icon(
+                  Icons.list,
+                  color: Colors.red,
+                )),
+            BottomNavigationBarItem(
+                label: "Favorites",
                 icon: Icon(Icons.favorite_border),
                 activeIcon: Icon(
                   Icons.favorite,
-                  color: Colors.blue,
+                  color: Colors.red,
                 ))
           ],
           currentIndex: _currentIndex,
@@ -70,6 +93,7 @@ class _HomePageState extends State<HomePage> {
               return PageView(
                 controller: _pageController,
                 children: const [
+                  LaunchListPage(),
                   LaunchListPage(),
                   LaunchListPage(isFromFavorite: true)
                 ],

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app_spacex/core/manager/api_manager.dart';
+import 'package:app_spacex/core/manager/database_manager.dart';
 import 'package:app_spacex/core/model/launch.dart';
 import 'package:flutter/material.dart';
 
@@ -21,17 +22,12 @@ class LaunchManager {
 
   int get _launchListLength => _launches?.length ?? 0;
 
-  /// Initialise les spots :
-  /// - Via l'API pour la liste complète
-  /// - Via la BDD pour les spots favoris
   Future<bool> initData() async {
     await Future.wait([loadAllUpcomingLaunches()]);
     return true;
   }
 
-  /// Charge et renvoie la liste complète de spots
   Future<void> loadAllUpcomingLaunches() async {
-    // Calling API
     try {
       var response = await ApiManager().getAllUpcomingLaunches();
       if (response.data != null) {

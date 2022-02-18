@@ -1,6 +1,7 @@
 import 'package:app_spacex/core/manager/launch_manager.dart';
 import 'package:app_spacex/core/model/launch.dart';
 import 'package:app_spacex/ui/components/image_placeholder.dart';
+import 'package:app_spacex/ui/launch_detail.dart';
 import 'package:flutter/material.dart';
 
 class LaunchList extends StatelessWidget {
@@ -18,7 +19,7 @@ class LaunchList extends StatelessWidget {
               Launch launch = launches[position];
               return InkWell(
                 onTap: () async {
-                  /*bool oldFavorite =
+                  bool oldFavorite =
                       LaunchManager().isLaunchFavorite(launch.id);
 
                   var newFavorite = await Navigator.of(context).pushNamed(
@@ -27,7 +28,7 @@ class LaunchList extends StatelessWidget {
 
                   if (newFavorite is bool && newFavorite != oldFavorite) {
                     onFavoriteChanged?.call(launch, false);
-                  }*/
+                  }
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,7 +70,7 @@ class LaunchList extends StatelessWidget {
                       onPressed: () {
                         onFavoriteChanged?.call(launch, true);
                       },
-                      color: Colors.blue,
+                      color: Colors.red,
                     ),
                     const SizedBox(
                       width: 16,
@@ -81,7 +82,7 @@ class LaunchList extends StatelessWidget {
             itemCount: launches.length,
           )
         : const Center(
-            child: Text('Aucun launch'),
+            child: Text('No launches'),
           );
   }
 }
