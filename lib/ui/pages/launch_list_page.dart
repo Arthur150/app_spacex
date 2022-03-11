@@ -1,12 +1,13 @@
 import 'package:app_spacex/core/manager/launch_manager.dart';
 import 'package:app_spacex/core/model/launch.dart';
+import 'package:app_spacex/core/model/list_type.dart';
 import 'package:app_spacex/ui/components/launch_list.dart';
 import 'package:flutter/material.dart';
 
 class LaunchListPage extends StatefulWidget {
-  final bool isFromFavorite;
+  final ListType type;
 
-  const LaunchListPage({Key? key, this.isFromFavorite = false})
+  const LaunchListPage({Key? key, this.type = ListType.upcomings})
       : super(key: key);
 
   @override
@@ -17,9 +18,7 @@ class _LaunchListPageState extends State<LaunchListPage> {
   @override
   Widget build(BuildContext context) {
     return LaunchList(
-      launches: widget.isFromFavorite
-          ? LaunchManager().favoriteLaunches
-          : LaunchManager().launches,
+      launches: LaunchManager().getLaunches(widget.type),
       onFavoriteChanged: (Launch launch, bool shouldToggle) async {
         if (shouldToggle) {
           await LaunchManager().toggleFavorite(launch);

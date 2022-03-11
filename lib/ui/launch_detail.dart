@@ -97,6 +97,11 @@ class _LaunchDetailState extends State<LaunchDetail> {
                         const SizedBox(
                           height: 20,
                         ),
+                        Text(
+                            "Fire date : ${launch.staticFireDateUTC ?? "unknown"}"),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         snapshot.hasData
                             ? _LaunchDetail(launch.details ?? '')
                             : Container(),

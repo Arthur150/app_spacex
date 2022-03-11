@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:app_spacex/core/manager/launch_manager.dart';
 import 'package:app_spacex/core/manager/company_manager.dart';
 import 'package:app_spacex/ui/pages/launch_list_page.dart';
+import 'package:app_spacex/core/model/list_type.dart';
 import 'package:app_spacex/ui/company_detail.dart';
 
 class HomePage extends StatefulWidget {
@@ -93,9 +94,9 @@ class _HomePageState extends State<HomePage> {
               return PageView(
                 controller: _pageController,
                 children: const [
-                  LaunchListPage(),
-                  LaunchListPage(),
-                  LaunchListPage(isFromFavorite: true)
+                  LaunchListPage(type: ListType.upcomings),
+                  LaunchListPage(type: ListType.previous),
+                  LaunchListPage(type: ListType.favorites)
                 ],
               );
             } else {

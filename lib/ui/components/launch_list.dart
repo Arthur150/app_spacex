@@ -59,7 +59,7 @@ class LaunchList extends StatelessWidget {
                             height: 8,
                           ),
                           Text(
-                              "Date de lancement : ${launch.dateUTC ?? 'Date inconnue'}")
+                              "Launch date : ${launch.staticFireDateUTC ?? launch.dateUTC ?? 'Unknown'}")
                         ],
                       ),
                     ),

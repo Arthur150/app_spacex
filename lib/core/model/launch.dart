@@ -21,6 +21,8 @@ class Launch {
   String? name;
   @JsonKey(name: "date_utc")
   String? dateUTC;
+  @JsonKey(name: "static_fire_date_utc")
+  String? staticFireDateUTC;
   bool? upcoming;
 
   Launch(
@@ -34,6 +36,7 @@ class Launch {
       this.flightNumber,
       this.name,
       this.dateUTC,
+      this.staticFireDateUTC,
       this.upcoming});
 
   factory Launch.fromJson(Map<String, dynamic> json) => _$LaunchFromJson(json);

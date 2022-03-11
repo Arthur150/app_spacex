@@ -28,13 +28,16 @@ Launch _$LaunchFromJson(Map<String, dynamic> json) => $checkedCreate(
           flightNumber: $checkedConvert('flight_number', (v) => v as int?),
           name: $checkedConvert('name', (v) => v as String?),
           dateUTC: $checkedConvert('date_utc', (v) => v as String?),
+          staticFireDateUTC:
+              $checkedConvert('static_fire_date_utc', (v) => v as String?),
           upcoming: $checkedConvert('upcoming', (v) => v as bool?),
         );
         return val;
       },
       fieldKeyMap: const {
         'flightNumber': 'flight_number',
-        'dateUTC': 'date_utc'
+        'dateUTC': 'date_utc',
+        'staticFireDateUTC': 'static_fire_date_utc'
       },
     );
 
@@ -49,5 +52,6 @@ Map<String, dynamic> _$LaunchToJson(Launch instance) => <String, dynamic>{
       'flight_number': instance.flightNumber,
       'name': instance.name,
       'date_utc': instance.dateUTC,
+      'static_fire_date_utc': instance.staticFireDateUTC,
       'upcoming': instance.upcoming,
     };
