@@ -72,12 +72,16 @@ class _LaunchDetailState extends State<LaunchDetail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Image.network(
-                          launch.links?.patch?.large ?? '',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, child, stack) {
-                            return const ImagePlaceholder();
-                          },
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 300,
+                          child: Image.network(
+                            launch.links?.patch?.large ?? '',
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, child, stack) {
+                              return const ImagePlaceholder();
+                            },
+                          ),
                         ),
                         Text(
                           launch.name ?? '',
@@ -98,7 +102,7 @@ class _LaunchDetailState extends State<LaunchDetail> {
                           height: 20,
                         ),
                         Text(
-                            "Fire date : ${launch.staticFireDateUTC ?? "unknown"}"),
+                            "Fire Date : ${launch.staticFireDateUTC ?? "unknown"}"),
                         const SizedBox(
                           height: 20,
                         ),

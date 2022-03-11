@@ -53,6 +53,8 @@ class LaunchManager {
       if (response.data != null) {
         _pastLaunches = List<dynamic>.from(response.data!)
             .map((json) => Launch.fromJson(json))
+            .toList()
+            .reversed
             .toList();
       }
     } catch (e) {

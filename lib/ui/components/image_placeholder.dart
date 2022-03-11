@@ -6,11 +6,15 @@ class ImagePlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      margin: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(1000),
+          color: Colors.white,
+          border: Border.all(width: 2, color: Colors.red)),
       child: const Center(
         child: Icon(
-          Icons.photo_rounded,
-          color: Colors.white,
+          Icons.rocket_launch_rounded,
+          color: Colors.red,
         ),
       ),
     );

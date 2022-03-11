@@ -46,8 +46,7 @@ class _HomePageState extends State<HomePage> {
 
                                 if (company != null) {
                                 await Navigator.of(context).pushNamed(
-                                  CompanyDetail.route,
-                                  arguments: CompanyDetailArguments(company: company));
+                                  CompanyDetail.route);
                                 }
                               },
                               icon: const Icon(Icons.info_outline)
@@ -61,16 +60,16 @@ class _HomePageState extends State<HomePage> {
           items: const [
             BottomNavigationBarItem(
                 label: "Upcomings",
-                icon: Icon(Icons.list),
+                icon: Icon(Icons.rocket),
                 activeIcon: Icon(
-                  Icons.list,
+                  Icons.rocket,
                   color: Colors.red,
                 )),
             BottomNavigationBarItem(
                 label: "Previous",
-                icon: Icon(Icons.list),
+                icon: Icon(Icons.history),
                 activeIcon: Icon(
-                  Icons.list,
+                  Icons.history,
                   color: Colors.red,
                 )),
             BottomNavigationBarItem(
@@ -96,6 +95,7 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
               return PageView(
                 controller: _pageController,
+                physics: NeverScrollableScrollPhysics(),
                 children: const [
                   LaunchListPage(type: ListType.upcomings),
                   LaunchListPage(type: ListType.previous),

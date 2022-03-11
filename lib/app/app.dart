@@ -42,13 +42,7 @@ class App extends StatelessWidget {
                   "Cette route doit avoir un objet LaunchDetailArguments en argument");
             }
           case CompanyDetail.route:
-            if (arguments != null && arguments is CompanyDetailArguments) {
-              Company company = arguments.company;
-              return MaterialPageRoute(builder: (_) => CompanyDetail(company));
-            } else {
-              throw Exception(
-                  "Cette route doit avoir un objet CompanyDetailArguments en argument");
-            }
+            return MaterialPageRoute(builder: (_) => CompanyDetail());
 
           default:
             return unknownRoute();

@@ -59,7 +59,7 @@ class LaunchList extends StatelessWidget {
                             height: 8,
                           ),
                           Text(
-                              "Launch date : ${launch.staticFireDateUTC ?? launch.dateUTC ?? 'Unknown'}")
+                              "Launch Date : ${launch.staticFireDateUTC ?? launch.dateUTC ?? 'Unknown'}")
                         ],
                       ),
                     ),
@@ -82,7 +82,7 @@ class LaunchList extends StatelessWidget {
             itemCount: launches.length,
           )
         : const Center(
-            child: Text('No launches'),
+            child: Text('No Launches'),
           );
   }
 }
