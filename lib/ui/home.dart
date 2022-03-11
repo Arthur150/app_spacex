@@ -50,7 +50,10 @@ class _HomePageState extends State<HomePage> {
                                   arguments: CompanyDetailArguments(company: company));
                                 }
                               },
-                              icon: const Icon(Icons.home)
+                              icon: const Icon(Icons.info_outline)
+                            ),
+                            const SizedBox(
+                              width: 16,
                             )
                         ],
         ),

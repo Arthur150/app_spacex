@@ -11,8 +11,8 @@ class DatabaseManager {
 
   late Database _db;
 
-  final StoreRef<int, Map<String, dynamic>> _launchStore =
-      intMapStoreFactory.store(launchStore);
+  final StoreRef<String, Map<String, dynamic>> _launchStore =
+      stringMapStoreFactory.store(launchStore);
 
   DatabaseManager._internal();
 
@@ -22,7 +22,7 @@ class DatabaseManager {
         .openDatabase("$dataDirectoryPath/spacex_launches.db");
   }
 
-  /*Future<void> toggleFavorite(bool isFavorite, Launch launch) =>
+  Future<void> toggleFavorite(bool isFavorite, Launch launch) =>
       isFavorite ? removeLaunch(launch.id) : insertLaunch(launch);
 
   Future<void> insertLaunch(Launch launch) async =>
@@ -34,7 +34,7 @@ class DatabaseManager {
       await _launchStore.record(launchId).delete(_db);
 
   Future<bool> isFavorite(String launchId) async =>
-      await _launchStore.record(launchId).exists(_db);*/
+      await _launchStore.record(launchId).exists(_db);
 
   Future<List<Launch>> getFavoriteLaunches() async =>
       await _launchStore.find(_db).then((records) =>

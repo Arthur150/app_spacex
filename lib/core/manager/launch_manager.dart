@@ -26,8 +26,11 @@ class LaunchManager {
   LaunchManager._internal();
 
   Future<bool> initData() async {
-    await Future.wait([loadAllUpcomingLaunches()]);
-    await Future.wait([loadAllPastLaunches()]);
+    await Future.wait([
+      loadFavoriteLaunches(),
+      loadAllUpcomingLaunches(),
+      loadAllPastLaunches()
+    ]);
     return true;
   }
 
@@ -57,12 +60,18 @@ class LaunchManager {
     }
   }
 
+  Future<void> loadFavoriteLaunches() async {
+    _favoriteLaunches = await DatabaseManager.instance.getFavoriteLaunches();
+  }
+
   List<Launch> getLaunches(ListType type) {
     switch (type) {
       case ListType.upcomings:
         return upcomingLaunches;
       case ListType.previous:
         return pastLaunches;
+      case ListType.favorites:
+        return favoriteLaunches;
       default:
         List<Launch> launches = [];
         return launches;
@@ -80,7 +89,7 @@ class LaunchManager {
   }
 
   Future<void> toggleFavorite(Launch launchToUpdate) async {
-    /*bool isFavorite = await DatabaseManager().isFavorite(launchToUpdate.id);
+    bool isFavorite = await DatabaseManager().isFavorite(launchToUpdate.id);
     await DatabaseManager().toggleFavorite(isFavorite, launchToUpdate);
     if (isFavorite) {
       _favoriteLaunches
@@ -88,6 +97,6 @@ class LaunchManager {
     } else {
       _favoriteLaunches ??= [];
       _favoriteLaunches?.add(launchToUpdate);
-    }*/
+    }
   }
 }
