@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
               return PageView(
                 controller: _pageController,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 children: const [
                   LaunchListPage(type: ListType.upcomings),
                   LaunchListPage(type: ListType.previous),

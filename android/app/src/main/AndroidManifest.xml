@@ -5,6 +5,10 @@
         android:label="app_spacex"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY" 
+            android:value="AIzaSyB5sLJ-7ue2N4g5Whvk1ZGVXA0D35iJIVs" />
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"

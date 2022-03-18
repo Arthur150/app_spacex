@@ -12,16 +12,14 @@ Launchpad _$LaunchpadFromJson(Map<String, dynamic> json) => $checkedCreate(
       ($checkedConvert) {
         final val = Launchpad(
           id: $checkedConvert('id', (v) => v as String),
-          name: $checkedConvert('name', (v) => v as String?),
-          fullName: $checkedConvert('full_name', (v) => v as String?),
-          locality: $checkedConvert('locality', (v) => v as String?),
-          region: $checkedConvert('region', (v) => v as String?),
-          latitude: $checkedConvert('latitude', (v) => (v as num?)?.toDouble()),
-          longitude:
-              $checkedConvert('longitude', (v) => (v as num?)?.toDouble()),
-          launchAttempts: $checkedConvert('launch_attempts', (v) => v as int?),
-          launchSuccesses:
-              $checkedConvert('launch_successes', (v) => v as int?),
+          name: $checkedConvert('name', (v) => v as String),
+          fullName: $checkedConvert('full_name', (v) => v as String),
+          locality: $checkedConvert('locality', (v) => v as String),
+          region: $checkedConvert('region', (v) => v as String),
+          latitude: $checkedConvert('latitude', (v) => (v as num).toDouble()),
+          longitude: $checkedConvert('longitude', (v) => (v as num).toDouble()),
+          launchAttempts: $checkedConvert('launch_attempts', (v) => v as int),
+          launchSuccesses: $checkedConvert('launch_successes', (v) => v as int),
         );
         return val;
       },
