@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_spacex/core/manager/launch_manager.dart';
 import 'package:app_spacex/core/model/launch.dart';
 import 'package:app_spacex/core/model/launchpad.dart';
@@ -25,6 +27,8 @@ class LaunchDetail extends StatefulWidget {
 class _LaunchDetailState extends State<LaunchDetail> {
   late Launch launch;
 
+  final List<Marker> _markers = [];
+
   @override
   void initState() {
     launch = widget.launch;
@@ -33,30 +37,14 @@ class _LaunchDetailState extends State<LaunchDetail> {
 
   @override
   Widget build(BuildContext context) {
-    bool? isFavorite = LaunchManager().isLaunchFavorite(launch.id);
+    bool isFavorite = LaunchManager().isLaunchFavorite(launch.id);
+
+    Completer<GoogleMapController> _controller = Completer();
 
     Launchpad? launchpad = launch.launchpad;
 
     LatLng position =
         LatLng(launchpad?.latitude ?? 0, launchpad?.longitude ?? 0);
-
-    final Map<String, Marker> _markers = {};
-    void _onMapCreated(GoogleMapController controller) {
-      setState(() {
-        _markers.clear();
-        if (launchpad != null) {
-          final marker = Marker(
-            markerId: MarkerId(launchpad.id),
-            position: position,
-            infoWindow: InfoWindow(
-              title: launchpad.name,
-              snippet: launchpad.fullName,
-            ),
-          );
-          _markers[launchpad.id] = marker;
-        }
-      });
-    }
 
     return WillPopScope(
       onWillPop: () async {
@@ -67,15 +55,12 @@ class _LaunchDetailState extends State<LaunchDetail> {
           appBar: AppBar(title: Text(launch.name ?? ''), actions: [
             IconButton(
                 onPressed: () async {
-                  bool currentlyFavorite = isFavorite ?? false;
                   await LaunchManager().toggleFavorite(launch);
                   setState(() {
-                    isFavorite = !currentlyFavorite;
+                    isFavorite = !isFavorite;
                   });
                 },
-                icon: Icon(isFavorite ?? false
-                    ? Icons.favorite
-                    : Icons.favorite_border))
+                icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border))
           ]),
           body: SingleChildScrollView(
             child: Column(
@@ -97,15 +82,8 @@ class _LaunchDetailState extends State<LaunchDetail> {
                           },
                         ),
                       ),
-                      Text(
-                        launch.name ?? '',
-                        style: const TextStyle(fontSize: 20),
-                      ),
                       const SizedBox(
-                        height: 12,
-                      ),
-                      const SizedBox(
-                        height: 12,
+                        height: 20,
                       ),
                       Text("Flight Number : ${launch.flightNumber}"),
                       const SizedBox(
@@ -113,7 +91,7 @@ class _LaunchDetailState extends State<LaunchDetail> {
                       ),
                       Text("Date : ${launch.dateUTC ?? "unknown"}"),
                       const SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                       Text(
                           "Fire Date : ${launch.staticFireDateUTC ?? "unknown"}"),
@@ -145,12 +123,24 @@ class _LaunchDetailState extends State<LaunchDetail> {
                         height: MediaQuery.of(context).size.height,
                         child: GoogleMap(
                           mapType: MapType.hybrid,
-                          onMapCreated: _onMapCreated,
+                          onMapCreated: (GoogleMapController controller) {
+                            setState(() {
+                              _controller.complete(controller);
+                              _markers.add(Marker(
+                                markerId: MarkerId(launchpad!.id),
+                                position: position,
+                                infoWindow: InfoWindow(
+                                  title: launchpad.name,
+                                  snippet: launchpad.fullName,
+                                ),
+                              ));
+                            });
+                          },
                           initialCameraPosition: CameraPosition(
                             target: position,
                             zoom: 15.0,
                           ),
-                          markers: _markers.values.toSet(),
+                          markers: _markers.toSet(),
                           scrollGesturesEnabled: false,
                           rotateGesturesEnabled: false,
                         ),
