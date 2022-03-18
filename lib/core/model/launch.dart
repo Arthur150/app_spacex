@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:app_spacex/core/model/fairing.dart';
+import 'package:app_spacex/core/model/launchpad.dart';
 import 'package:app_spacex/core/model/links.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,7 +14,8 @@ class Launch {
   String? rocket;
   bool? success;
   String? details;
-  String? launchpad;
+  @JsonKey(name: "launchpad")
+  String? launchpadId;
   @JsonKey(name: "flight_number")
   int? flightNumber;
   String? name;
@@ -24,6 +24,8 @@ class Launch {
   @JsonKey(name: "static_fire_date_utc")
   String? staticFireDateUTC;
   bool? upcoming;
+  @JsonKey(ignore: true)
+  Launchpad? launchpad;
 
   Launch(
       {required this.id,

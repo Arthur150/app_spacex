@@ -24,7 +24,6 @@ Launch _$LaunchFromJson(Map<String, dynamic> json) => $checkedCreate(
           rocket: $checkedConvert('rocket', (v) => v as String?),
           success: $checkedConvert('success', (v) => v as bool?),
           details: $checkedConvert('details', (v) => v as String?),
-          launchpad: $checkedConvert('launchpad', (v) => v as String?),
           flightNumber: $checkedConvert('flight_number', (v) => v as int?),
           name: $checkedConvert('name', (v) => v as String?),
           dateUTC: $checkedConvert('date_utc', (v) => v as String?),
@@ -32,12 +31,14 @@ Launch _$LaunchFromJson(Map<String, dynamic> json) => $checkedCreate(
               $checkedConvert('static_fire_date_utc', (v) => v as String?),
           upcoming: $checkedConvert('upcoming', (v) => v as bool?),
         );
+        $checkedConvert('launchpad', (v) => val.launchpadId = v as String?);
         return val;
       },
       fieldKeyMap: const {
         'flightNumber': 'flight_number',
         'dateUTC': 'date_utc',
-        'staticFireDateUTC': 'static_fire_date_utc'
+        'staticFireDateUTC': 'static_fire_date_utc',
+        'launchpadId': 'launchpad'
       },
     );
 
@@ -48,7 +49,7 @@ Map<String, dynamic> _$LaunchToJson(Launch instance) => <String, dynamic>{
       'rocket': instance.rocket,
       'success': instance.success,
       'details': instance.details,
-      'launchpad': instance.launchpad,
+      'launchpad': instance.launchpadId,
       'flight_number': instance.flightNumber,
       'name': instance.name,
       'date_utc': instance.dateUTC,

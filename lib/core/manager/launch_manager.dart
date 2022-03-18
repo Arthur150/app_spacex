@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:app_spacex/core/manager/api_manager.dart';
 import 'package:app_spacex/core/manager/database_manager.dart';
 import 'package:app_spacex/core/model/launch.dart';
+import 'package:app_spacex/core/model/launchpad.dart';
 import 'package:app_spacex/core/model/list_type.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +29,12 @@ class LaunchManager {
       loadFavoriteLaunches(),
       loadAllUpcomingLaunches(),
       loadAllPastLaunches()
+    ]);
+
+    Future.wait([
+      loadLaunchpadForLaunches(_upcomingLaunches),
+      loadLaunchpadForLaunches(_pastLaunches),
+      loadLaunchpadForLaunches(_favoriteLaunches)
     ]);
     return true;
   }
@@ -64,6 +69,24 @@ class LaunchManager {
 
   Future<void> loadFavoriteLaunches() async {
     _favoriteLaunches = await DatabaseManager.instance.getFavoriteLaunches();
+  }
+
+  Future<void> loadLaunchpadForLaunches(List<Launch>? launches) async {
+    if (launches != null) {
+      for (var launch in launches) {
+        String? id = launch.launchpadId;
+        if (id != null) {
+          try {
+            var response = await ApiManager().getLaunchpad(id);
+            if (response.data != null) {
+              launch.launchpad = Launchpad.fromJson(response.data!);
+            }
+          } catch (e) {
+            debugPrint("Erreur : $e");
+          }
+        }
+      }
+    }
   }
 
   List<Launch> getLaunches(ListType type) {
