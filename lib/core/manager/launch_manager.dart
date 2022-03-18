@@ -1,0 +1,127 @@
+import 'package:app_spacex/core/manager/api_manager.dart';
+import 'package:app_spacex/core/manager/database_manager.dart';
+import 'package:app_spacex/core/model/launch.dart';
+import 'package:app_spacex/core/model/launchpad.dart';
+import 'package:app_spacex/core/model/list_type.dart';
+import 'package:flutter/material.dart';
+
+class LaunchManager {
+  List<Launch>? _upcomingLaunches;
+
+  List<Launch> get upcomingLaunches => _upcomingLaunches ?? [];
+
+  List<Launch>? _pastLaunches;
+
+  List<Launch> get pastLaunches => _pastLaunches ?? [];
+
+  List<Launch>? _favoriteLaunches;
+
+  List<Launch> get favoriteLaunches => _favoriteLaunches ?? [];
+
+  static final LaunchManager _instance = LaunchManager._internal();
+
+  factory LaunchManager() => _instance;
+
+  LaunchManager._internal();
+
+  Future<bool> initData() async {
+    await Future.wait([
+      loadFavoriteLaunches(),
+      loadAllUpcomingLaunches(),
+      loadAllPastLaunches()
+    ]);
+
+    Future.wait([
+      loadLaunchpadForLaunches(_upcomingLaunches),
+      loadLaunchpadForLaunches(_pastLaunches),
+      loadLaunchpadForLaunches(_favoriteLaunches)
+    ]);
+    return true;
+  }
+
+  Future<void> loadAllUpcomingLaunches() async {
+    try {
+      var response = await ApiManager().getAllUpcomingLaunches();
+      if (response.data != null) {
+        _upcomingLaunches = List<dynamic>.from(response.data!)
+            .map((json) => Launch.fromJson(json))
+            .toList();
+      }
+    } catch (e) {
+      debugPrint("Erreur : $e");
+    }
+  }
+
+  Future<void> loadAllPastLaunches() async {
+    try {
+      var response = await ApiManager().getAllPastLaunches();
+      if (response.data != null) {
+        _pastLaunches = List<dynamic>.from(response.data!)
+            .map((json) => Launch.fromJson(json))
+            .toList()
+            .reversed
+            .toList();
+      }
+    } catch (e) {
+      debugPrint("Erreur : $e");
+    }
+  }
+
+  Future<void> loadFavoriteLaunches() async {
+    _favoriteLaunches = await DatabaseManager.instance.getFavoriteLaunches();
+  }
+
+  Future<void> loadLaunchpadForLaunches(List<Launch>? launches) async {
+    if (launches != null) {
+      for (var launch in launches) {
+        String? id = launch.launchpadId;
+        if (id != null) {
+          try {
+            var response = await ApiManager().getLaunchpad(id);
+            if (response.data != null) {
+              launch.launchpad = Launchpad.fromJson(response.data!);
+            }
+          } catch (e) {
+            debugPrint("Erreur : $e");
+          }
+        }
+      }
+    }
+  }
+
+  List<Launch> getLaunches(ListType type) {
+    switch (type) {
+      case ListType.upcomings:
+        return upcomingLaunches;
+      case ListType.previous:
+        return pastLaunches;
+      case ListType.favorites:
+        return favoriteLaunches;
+      default:
+        List<Launch> launches = [];
+        return launches;
+    }
+  }
+
+  bool isLaunchFavorite(String launchId) {
+    try {
+      return _favoriteLaunches?.firstWhere((launch) => launch.id == launchId) !=
+          null;
+    } catch (e) {
+      // Launch not found
+      return false;
+    }
+  }
+
+  Future<void> toggleFavorite(Launch launchToUpdate) async {
+    bool isFavorite = await DatabaseManager().isFavorite(launchToUpdate.id);
+    await DatabaseManager().toggleFavorite(isFavorite, launchToUpdate);
+    if (isFavorite) {
+      _favoriteLaunches
+          ?.removeWhere((Launch launch) => launch.id == launchToUpdate.id);
+    } else {
+      _favoriteLaunches ??= [];
+      _favoriteLaunches?.add(launchToUpdate);
+    }
+  }
+}
